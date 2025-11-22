@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { Link } from 'react-router-dom';
@@ -7,6 +7,47 @@ const Hero = () => {
     const heroRef = useRef(null);
     const titleRef = useRef(null);
     const containerRef = useRef(null);
+
+    // Generate stable random values for animations
+    const shapeData = useMemo(() => Array.from({ length: 12 }, (_, i) => ({
+        id: i,
+        size: 20 + (i % 7) * 8,
+        left: (i * 7.3) % 100,
+        top: (i * 11.7) % 100,
+        isRound: i % 2 === 0,
+        borderRadius: i % 2 === 0 ? 50 : 10 + (i % 5) * 4,
+        isCyan: i % 2 === 0,
+        yRange: -20 + (i % 5) * 10,
+        xRange: -15 + (i % 4) * 8,
+        duration: 4 + (i % 4),
+        delay: (i * 0.3) % 2,
+    })), []);
+
+    const particleData = useMemo(() => Array.from({ length: 8 }, (_, i) => ({
+        id: i,
+        left: (i * 12.5) % 100,
+        height: 120 + (i % 5) * 40,
+        isCyan: i % 2 === 0,
+        xOffset: -30 + (i % 7) * 10,
+        duration: 3 + (i % 4),
+        delay: (i * 0.6) % 5,
+        rotate: -3 + (i % 7) * 2,
+    })), []);
+
+    const orbData = useMemo(() => [
+        { size: 200, left: 20, top: 30, isCyan: true, delay: 0 },
+        { size: 350, left: 50, top: 50, isCyan: false, delay: 2 },
+        { size: 300, left: 80, top: 20, isCyan: true, delay: 4 },
+    ], []);
+
+    const cubeData = useMemo(() => Array.from({ length: 4 }, (_, i) => ({
+        id: i,
+        left: 15 + i * 25,
+        top: 20 + (i % 2) * 40,
+        isCyan: i % 2 === 0,
+        duration: 8 + i * 2,
+        delay: i * 1.5,
+    })), []);
 
     useEffect(() => {
         // GSAP animations - ensure content is visible
@@ -67,35 +108,35 @@ const Hero = () => {
                 />
 
                 {/* Floating 3D Geometric Shapes */}
-                {[...Array(12)].map((_, i) => (
+                {shapeData.map((shape) => (
                     <motion.div
-                        key={`shape-${i}`}
+                        key={`shape-${shape.id}`}
                         className='absolute'
                         style={{
-                            width: `${20 + Math.random() * 60}px`,
-                            height: `${20 + Math.random() * 60}px`,
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            borderRadius: Math.random() > 0.5 ? '50%' : `${Math.random() * 30}%`,
-                            background: i % 2 === 0 
+                            width: `${shape.size}px`,
+                            height: `${shape.size}px`,
+                            left: `${shape.left}%`,
+                            top: `${shape.top}%`,
+                            borderRadius: shape.isRound ? '50%' : `${shape.borderRadius}%`,
+                            background: shape.isCyan
                                 ? 'linear-gradient(135deg, rgba(0, 255, 255, 0.3), rgba(0, 255, 255, 0.05))'
                                 : 'linear-gradient(135deg, rgba(255, 0, 255, 0.3), rgba(255, 0, 255, 0.05))',
                             backdropFilter: 'blur(10px)',
-                            border: `1px solid ${i % 2 === 0 ? 'rgba(0, 255, 255, 0.5)' : 'rgba(255, 0, 255, 0.5)'}`,
-                            boxShadow: `0 0 ${20 + Math.random() * 40}px ${i % 2 === 0 ? 'rgba(0, 255, 255, 0.5)' : 'rgba(255, 0, 255, 0.5)'}`,
+                            border: `1px solid ${shape.isCyan ? 'rgba(0, 255, 255, 0.5)' : 'rgba(255, 0, 255, 0.5)'}`,
+                            boxShadow: `0 0 ${20 + shape.id * 3}px ${shape.isCyan ? 'rgba(0, 255, 255, 0.5)' : 'rgba(255, 0, 255, 0.5)'}`,
                         }}
                         animate={{
-                            y: [0, -30 + Math.random() * 60, 0],
-                            x: [0, -20 + Math.random() * 40, 0],
+                            y: [0, shape.yRange, 0],
+                            x: [0, shape.xRange, 0],
                             rotate: [0, 360],
                             scale: [1, 1.2, 1],
                             opacity: [0.3, 0.7, 0.3],
                         }}
                         transition={{
-                            duration: 4 + Math.random() * 4,
+                            duration: shape.duration,
                             repeat: Infinity,
                             ease: 'easeInOut',
-                            delay: Math.random() * 2,
+                            delay: shape.delay,
                         }}
                     />
                 ))}
@@ -123,56 +164,56 @@ const Hero = () => {
                 />
 
                 {/* Animated Particles/Light Rays */}
-                {[...Array(8)].map((_, i) => (
+                {particleData.map((particle) => (
                     <motion.div
-                        key={`particle-${i}`}
+                        key={`particle-${particle.id}`}
                         className='absolute'
                         style={{
                             width: '2px',
-                            height: `${100 + Math.random() * 200}px`,
-                            left: `${Math.random() * 100}%`,
+                            height: `${particle.height}px`,
+                            left: `${particle.left}%`,
                             top: '-100px',
                             background: `linear-gradient(to bottom, 
                                 transparent, 
-                                ${i % 2 === 0 ? 'rgba(0, 255, 255, 0.8)' : 'rgba(255, 0, 255, 0.8)'}, 
+                                ${particle.isCyan ? 'rgba(0, 255, 255, 0.8)' : 'rgba(255, 0, 255, 0.8)'}, 
                                 transparent)`,
                             borderRadius: '50%',
-                            boxShadow: `0 0 ${10 + Math.random() * 20}px ${i % 2 === 0 ? 'rgba(0, 255, 255, 0.8)' : 'rgba(255, 0, 255, 0.8)'}`,
+                            boxShadow: `0 0 ${15 + particle.id * 2}px ${particle.isCyan ? 'rgba(0, 255, 255, 0.8)' : 'rgba(255, 0, 255, 0.8)'}`,
                             transformOrigin: 'center top',
                         }}
                         animate={{
-                            y: [0, window.innerHeight + 200],
-                            x: [0, -50 + Math.random() * 100],
+                            y: [0, typeof window !== 'undefined' ? window.innerHeight + 200 : 1000],
+                            x: [0, particle.xOffset],
                             opacity: [0, 1, 0],
-                            rotate: [-5 + Math.random() * 10, -5 + Math.random() * 10],
+                            rotate: [-3 + particle.rotate, particle.rotate],
                         }}
                         transition={{
-                            duration: 3 + Math.random() * 3,
+                            duration: particle.duration,
                             repeat: Infinity,
                             ease: 'linear',
-                            delay: Math.random() * 5,
+                            delay: particle.delay,
                         }}
                     />
                 ))}
 
                 {/* Large Floating Orbs */}
-                {[...Array(3)].map((_, i) => (
+                {orbData.map((orb, i) => (
                     <motion.div
                         key={`orb-${i}`}
                         className='absolute rounded-full'
                         style={{
-                            width: `${200 + i * 150}px`,
-                            height: `${200 + i * 150}px`,
-                            left: `${20 + i * 30}%`,
-                            top: `${30 + i * 20}%`,
+                            width: `${orb.size}px`,
+                            height: `${orb.size}px`,
+                            left: `${orb.left}%`,
+                            top: `${orb.top}%`,
                             background: `radial-gradient(circle, 
-                                ${i === 0 ? 'rgba(0, 255, 255, 0.2)' : i === 1 ? 'rgba(255, 0, 255, 0.2)' : 'rgba(0, 255, 255, 0.15)'}, 
+                                ${orb.isCyan ? 'rgba(0, 255, 255, 0.2)' : 'rgba(255, 0, 255, 0.2)'}, 
                                 transparent 70%)`,
                             filter: 'blur(40px)',
                         }}
                         animate={{
-                            x: [0, 50 + Math.random() * 100, 0],
-                            y: [0, 50 + Math.random() * 100, 0],
+                            x: [0, 30 + i * 20, 0],
+                            y: [0, 40 + i * 15, 0],
                             scale: [1, 1.2, 1],
                             opacity: [0.3, 0.6, 0.3],
                         }}
@@ -180,21 +221,21 @@ const Hero = () => {
                             duration: 6 + i * 2,
                             repeat: Infinity,
                             ease: 'easeInOut',
-                            delay: i * 2,
+                            delay: orb.delay,
                         }}
                     />
                 ))}
 
                 {/* 3D Rotating Cubes */}
-                {[...Array(4)].map((_, i) => (
+                {cubeData.map((cube) => (
                     <motion.div
-                        key={`cube-${i}`}
+                        key={`cube-${cube.id}`}
                         className='absolute'
                         style={{
                             width: '60px',
                             height: '60px',
-                            left: `${15 + i * 25}%`,
-                            top: `${20 + (i % 2) * 40}%`,
+                            left: `${cube.left}%`,
+                            top: `${cube.top}%`,
                             transformStyle: 'preserve-3d',
                         }}
                         animate={{
@@ -204,30 +245,32 @@ const Hero = () => {
                             y: [0, -30, 0],
                         }}
                         transition={{
-                            duration: 8 + i * 2,
+                            duration: cube.duration,
                             repeat: Infinity,
                             ease: 'linear',
-                            delay: i * 1.5,
+                            delay: cube.delay,
                         }}
                     >
                         {/* Cube faces */}
-                        {['front', 'back', 'right', 'left', 'top', 'bottom'].map((face, faceIdx) => (
+                        {[
+                            { name: 'front', transform: 'translateZ(30px)' },
+                            { name: 'back', transform: 'translateZ(-30px) rotateY(180deg)' },
+                            { name: 'right', transform: 'rotateY(90deg) translateZ(30px)' },
+                            { name: 'left', transform: 'rotateY(-90deg) translateZ(30px)' },
+                            { name: 'top', transform: 'rotateX(90deg) translateZ(30px)' },
+                            { name: 'bottom', transform: 'rotateX(-90deg) translateZ(30px)' },
+                        ].map((face) => (
                             <motion.div
-                                key={face}
+                                key={face.name}
                                 className='absolute w-full h-full'
                                 style={{
                                     background: `linear-gradient(135deg, 
-                                        ${i % 2 === 0 ? 'rgba(0, 255, 255, 0.4)' : 'rgba(255, 0, 255, 0.4)'}, 
-                                        ${i % 2 === 0 ? 'rgba(0, 255, 255, 0.1)' : 'rgba(255, 0, 255, 0.1)'})`,
-                                    border: `1px solid ${i % 2 === 0 ? 'rgba(0, 255, 255, 0.6)' : 'rgba(255, 0, 255, 0.6)'}`,
-                                    transform: face === 'front' ? 'translateZ(30px)' :
-                                              face === 'back' ? 'translateZ(-30px) rotateY(180deg)' :
-                                              face === 'right' ? 'rotateY(90deg) translateZ(30px)' :
-                                              face === 'left' ? 'rotateY(-90deg) translateZ(30px)' :
-                                              face === 'top' ? 'rotateX(90deg) translateZ(30px)' :
-                                              'rotateX(-90deg) translateZ(30px)',
+                                        ${cube.isCyan ? 'rgba(0, 255, 255, 0.4)' : 'rgba(255, 0, 255, 0.4)'}, 
+                                        ${cube.isCyan ? 'rgba(0, 255, 255, 0.1)' : 'rgba(255, 0, 255, 0.1)'})`,
+                                    border: `1px solid ${cube.isCyan ? 'rgba(0, 255, 255, 0.6)' : 'rgba(255, 0, 255, 0.6)'}`,
+                                    transform: face.transform,
                                     backdropFilter: 'blur(5px)',
-                                    boxShadow: `0 0 ${10}px ${i % 2 === 0 ? 'rgba(0, 255, 255, 0.5)' : 'rgba(255, 0, 255, 0.5)'}`,
+                                    boxShadow: `0 0 10px ${cube.isCyan ? 'rgba(0, 255, 255, 0.5)' : 'rgba(255, 0, 255, 0.5)'}`,
                                 }}
                             />
                         ))}
