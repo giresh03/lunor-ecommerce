@@ -134,12 +134,12 @@ const NavBar = () => {
       }}
     >
       {/* Logo - Left aligned */}
-      <div className="nav-item flex-shrink-0" style={{ opacity: 1, visibility: 'visible' }}>
+      <div className="nav-item flex-shrink-0 z-10" style={{ opacity: 1, visibility: 'visible' }}>
         <LunorLogo size="small" className="whitespace-nowrap" />
       </div>
 
       {/* Navigation Links - Centered */}
-      <div className="hidden md:flex items-center gap-1 text-sm flex-1 justify-center min-w-0 px-2" style={{ opacity: 1, visibility: 'visible', overflow: 'visible', flexShrink: 1 }}>
+      <div className="hidden md:flex items-center gap-0.5 text-sm flex-1 justify-center min-w-0 px-4" style={{ opacity: 1, visibility: 'visible', overflow: 'visible', flexShrink: 1 }}>
         <ul className="flex items-center gap-0.5 text-sm flex-shrink-0 whitespace-nowrap" style={{ opacity: 1, visibility: 'visible', listStyle: 'none', padding: 0, margin: 0 }}>
         <li className="nav-item" style={{ opacity: 1, visibility: 'visible' }}>
           <NavLink 
@@ -355,9 +355,10 @@ const NavBar = () => {
           </div>
         </li>
         </ul>
-        
-        {/* Profile and Cart Icons - Right section */}
-        <div className="flex items-center gap-1.5 nav-item flex-shrink-0 ml-1" style={{ opacity: 1, visibility: 'visible', display: 'flex !important', alignItems: 'center', flexShrink: 0, position: 'relative', zIndex: 100, width: 'auto', minWidth: 'auto' }}>
+      </div>
+      
+      {/* Icons - Right aligned */}
+      <div className="hidden md:flex items-center gap-1.5 nav-item flex-shrink-0 z-10" style={{ opacity: 1, visibility: 'visible', display: 'flex !important', alignItems: 'center', flexShrink: 0, position: 'relative', zIndex: 100, width: 'auto', minWidth: 'auto' }}>
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
