@@ -15,10 +15,19 @@ const Login = () => {
   const formRef = useRef(null);
 
   useEffect(() => {
+    // Ensure form elements are visible
+    const formElements = document.querySelectorAll('.form-element');
+    formElements.forEach(el => {
+      if (el) {
+        el.style.opacity = '1';
+        el.style.visibility = 'visible';
+      }
+    });
+
     if (formRef.current) {
       gsap.from('.form-element', {
-        opacity: 0,
-        y: 20,
+        opacity: 1,
+        y: 0,
         duration: 0.5,
         stagger: 0.1,
         ease: 'power3.out'
@@ -80,18 +89,18 @@ const Login = () => {
   }, [token, navigate])
 
   return (
-    <div className='min-h-screen flex items-center justify-center py-20 px-4'>
+    <div className='min-h-screen flex items-center justify-center py-20 px-4 relative z-20'>
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className='w-full max-w-md'
+        className='w-full max-w-md relative z-20'
       >
-        <div className='glass rounded-3xl p-8 lg:p-12 border border-white/10 backdrop-blur-xl shadow-2xl'>
+        <div className='glass rounded-3xl p-8 lg:p-12 border border-white/10 backdrop-blur-xl shadow-2xl relative' style={{ zIndex: 20, opacity: 1 }}>
           {/* Background gradient */}
-          <div className='absolute inset-0 rounded-3xl bg-gradient-to-br from-neon-cyan/10 via-transparent to-neon-magenta/10 opacity-50' />
+          <div className='absolute inset-0 rounded-3xl bg-gradient-to-br from-neon-cyan/10 via-transparent to-neon-magenta/10 opacity-50 pointer-events-none' style={{ zIndex: 1 }} />
           
-          <form ref={formRef} onSubmit={onSubmitHandler} className='flex flex-col gap-6 relative z-10'>
+          <form ref={formRef} onSubmit={onSubmitHandler} className='flex flex-col gap-6 relative' style={{ zIndex: 10, opacity: 1 }}>
             <motion.div 
               className='inline-flex items-center gap-3 mb-4 form-element'
               whileHover={{ scale: 1.05 }}
@@ -125,6 +134,7 @@ const Login = () => {
                   className='form-element w-full px-4 py-3 bg-dark-secondary/50 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/50 transition-all' 
                   placeholder='Full Name' 
                   required
+                  style={{ opacity: 1, visibility: 'visible' }}
                 />
               )}
             </AnimatePresence>
@@ -137,6 +147,7 @@ const Login = () => {
               className='form-element w-full px-4 py-3 bg-dark-secondary/50 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/50 transition-all' 
               placeholder='Email Address' 
               required
+              style={{ opacity: 1, visibility: 'visible' }}
             />
 
             <motion.input
@@ -147,6 +158,7 @@ const Login = () => {
               className='form-element w-full px-4 py-3 bg-dark-secondary/50 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/50 transition-all' 
               placeholder='Password'
               required
+              style={{ opacity: 1, visibility: 'visible' }}
             />
 
             <div className='w-full flex justify-between text-sm mt-2 form-element'>
