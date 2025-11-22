@@ -42,56 +42,14 @@ const Hero = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
             className='relative w-full min-h-screen flex items-center justify-center overflow-hidden'
-            style={{ minHeight: '100vh', position: 'relative' }}
+            style={{ 
+                minHeight: '100vh', 
+                position: 'relative',
+                margin: 0,
+                padding: 0,
+                width: '100%'
+            }}
         >
-            {/* Modern Gradient Background - CSS only, no animations */}
-            <div className='absolute inset-0 w-full h-full z-0'>
-                {/* Base gradient */}
-                <div 
-                    className='absolute inset-0 w-full h-full'
-                    style={{
-                        background: `
-                            radial-gradient(circle at 20% 30%, rgba(0, 255, 255, 0.08) 0%, transparent 50%),
-                            radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.08) 0%, transparent 50%),
-                            radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 1) 100%)
-                        `,
-                    }}
-                />
-                
-                {/* Subtle grid pattern - static */}
-                <div 
-                    className='absolute inset-0 w-full h-full opacity-30'
-                    style={{
-                        backgroundImage: `
-                            linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px)
-                        `,
-                        backgroundSize: '100px 100px',
-                    }}
-                />
-                
-                {/* Modern accent lines - static design */}
-                <div className='absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent' />
-                <div className='absolute bottom-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-magenta-500/20 to-transparent' />
-                
-                {/* Subtle corner accents */}
-                <div 
-                    className='absolute top-0 right-0 w-96 h-96'
-                    style={{
-                        background: 'radial-gradient(circle, rgba(0, 255, 255, 0.1) 0%, transparent 70%)',
-                        filter: 'blur(80px)',
-                        opacity: 0.5
-                    }}
-                />
-                <div 
-                    className='absolute bottom-0 left-0 w-96 h-96'
-                    style={{
-                        background: 'radial-gradient(circle, rgba(255, 0, 255, 0.1) 0%, transparent 70%)',
-                        filter: 'blur(80px)',
-                        opacity: 0.5
-                    }}
-                />
-            </div>
 
             {/* Content Overlay */}
             <div className='relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 mt-24 sm:mt-28 md:mt-32'>

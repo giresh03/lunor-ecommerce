@@ -23,9 +23,9 @@ import ThreeDBackground from './components/ThreeDBackground';
 
 const App = () => {
   return (
-    <div className="min-h-screen bg-dark-primary relative overflow-hidden">
+    <div className="min-h-screen relative w-full" style={{ margin: 0, padding: 0 }}>
       <ThreeDBackground />
-      <div className="relative z-10 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
+      <div className="relative z-10 w-full" style={{ margin: 0, padding: 0 }}>
         <ScrollToTop />
         <ToastContainer 
           toastClassName="glass rounded-lg"
