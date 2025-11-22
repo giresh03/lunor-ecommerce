@@ -119,7 +119,7 @@ const NavBar = () => {
         duration: 0.3, 
         ease: [0.23, 1, 0.32, 1]
       }}
-      className="fixed top-3 sm:top-4 md:top-6 left-1/2 transform -translate-x-1/2 w-[95%] sm:w-[92%] max-w-[1400px] z-[100] flex items-center justify-between py-2 sm:py-2.5 md:py-3 px-3 sm:px-4 md:px-5 lg:px-6"
+      className="fixed top-3 sm:top-4 md:top-6 left-1/2 transform -translate-x-1/2 w-[95%] sm:w-[92%] max-w-[1400px] z-[100] flex items-center py-2 sm:py-2.5 md:py-3 px-3 sm:px-4 md:px-5 lg:px-6"
         style={{
         background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%)',
         backdropFilter: 'blur(24px) saturate(180%)',
@@ -133,13 +133,21 @@ const NavBar = () => {
         maxWidth: '100%'
       }}
     >
-      {/* Logo - Left aligned */}
-      <div className="nav-item flex-shrink-0 z-10" style={{ opacity: 1, visibility: 'visible' }}>
+      {/* Logo - Left aligned with flex-1 to balance */}
+      <div className="nav-item flex-shrink-0 z-10 flex-1 md:flex-none" style={{ opacity: 1, visibility: 'visible' }}>
         <LunorLogo size="small" className="whitespace-nowrap" />
       </div>
 
-      {/* Navigation Links - Centered */}
-      <div className="hidden md:flex items-center gap-0.5 text-sm flex-1 justify-center min-w-0 px-4" style={{ opacity: 1, visibility: 'visible', overflow: 'visible', flexShrink: 1 }}>
+      {/* Navigation Links - Truly Centered */}
+      <div className="hidden md:flex items-center gap-0.5 text-sm min-w-0 px-2" style={{ 
+        opacity: 1, 
+        visibility: 'visible', 
+        overflow: 'visible', 
+        position: 'absolute',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        flexShrink: 0
+      }}>
         <ul className="flex items-center gap-0.5 text-sm flex-shrink-0 whitespace-nowrap" style={{ opacity: 1, visibility: 'visible', listStyle: 'none', padding: 0, margin: 0 }}>
         <li className="nav-item" style={{ opacity: 1, visibility: 'visible' }}>
           <NavLink 
@@ -357,8 +365,8 @@ const NavBar = () => {
         </ul>
       </div>
       
-      {/* Icons - Right aligned */}
-      <div className="hidden md:flex items-center gap-1.5 nav-item flex-shrink-0 z-10" style={{ opacity: 1, visibility: 'visible', display: 'flex !important', alignItems: 'center', flexShrink: 0, position: 'relative', zIndex: 100, width: 'auto', minWidth: 'auto' }}>
+      {/* Icons - Right aligned with flex-1 to balance */}
+      <div className="hidden md:flex items-center gap-1.5 nav-item flex-shrink-0 z-10 flex-1 justify-end" style={{ opacity: 1, visibility: 'visible', display: 'flex !important', alignItems: 'center', flexShrink: 0, position: 'relative', zIndex: 100, width: 'auto', minWidth: 'auto' }}>
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
