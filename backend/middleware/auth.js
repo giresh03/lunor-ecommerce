@@ -12,7 +12,7 @@ const authUser = async (req, resizeBy, next) => {
     }
     catch(error){
         console.log(error)
-        res.json({ success: false, message: error.message })
+        resizeBy.json({ success: false, message: error.message })
     }
 }
 

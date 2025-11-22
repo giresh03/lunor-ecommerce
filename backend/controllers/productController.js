@@ -1,5 +1,6 @@
 import {v2 as cloudinary} from 'cloudinary';
 import productModel from '../models/productModel.js';
+import mongoose from 'mongoose';
 
 cloudinary.config({ 
     cloud_name: process.env.CLOUDINARY_NAME, 
@@ -46,6 +47,23 @@ const addProduct = async (req, res) => {
             images: imagesUrl,
             date: Date.now(),
         };
+
+        // ✅ Wait for MongoDB connection if not ready (with extended timeout)
+        let attempts = 0;
+        const maxAttempts = 30; // Wait up to 15 seconds (30 * 500ms)
+        while (mongoose.connection.readyState !== 1 && attempts < maxAttempts) {
+            await new Promise(resolve => setTimeout(resolve, 500));
+            attempts++;
+        }
+        
+        // Double check connection state
+        if (mongoose.connection.readyState !== 1) {
+            console.log('MongoDB connection state:', mongoose.connection.readyState);
+            return res.status(503).json({ 
+                success: false, 
+                message: "Database connection not ready. The connection might still be establishing. Please wait a moment and try again." 
+            });
+        }
 
         // ✅ Save product in DB
         const product = new productModel(productData);

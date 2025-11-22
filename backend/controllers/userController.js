@@ -81,4 +81,61 @@ const adminLogin = async (req, res) => {
     }
 }
 
-export { loginUser, registerUser, adminLogin };
+// Route to get user data
+const getUserData = async (req, res) => {
+    try {
+        const { userId } = req.body;
+        const user = await userModel.findById(userId).select('-password');
+        if (!user) {
+            return res.json({ success: false, message: "User not found" });
+        }
+        
+        // Get creation date from ObjectId timestamp
+        let createdAt = new Date();
+        if (user._id && typeof user._id.getTimestamp === 'function') {
+            createdAt = user._id.getTimestamp();
+        }
+        
+        res.json({ 
+            success: true, 
+            user: {
+                name: user.name,
+                email: user.email,
+                _id: user._id,
+                createdAt: createdAt
+            }
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+}
+
+// Route to get all users (for admin)
+const getAllUsers = async (req, res) => {
+    try {
+        // Sort by _id descending to get newest users first (ObjectId contains timestamp)
+        const users = await userModel.find({}).select('-password').sort({ _id: -1 });
+        
+        // Add createdAt from ObjectId timestamp
+        const usersWithDates = users.map(user => {
+            let createdAt = new Date();
+            if (user._id && typeof user._id.getTimestamp === 'function') {
+                createdAt = user._id.getTimestamp();
+            }
+            return {
+                ...user.toObject(),
+                createdAt: createdAt
+            };
+        });
+        
+        res.json({ success: true, users: usersWithDates });
+    }
+    catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+}
+
+export { loginUser, registerUser, adminLogin, getUserData, getAllUsers };

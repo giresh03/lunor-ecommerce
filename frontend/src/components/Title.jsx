@@ -1,13 +1,27 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
-const Title = ({ text1, text2 }) => { // Destructure the props here
+const Title = ({ text1, text2 }) => {
   return (
-    <div className="inline-flex gap-2 items-center mb-3">
-      <p className="text-gray-500">
-        {text1} <span className="text-gray-700 font-medium">{text2}</span>
+    <motion.div 
+      className="inline-flex gap-3 items-center mb-3"
+      initial={{ opacity: 0, x: -20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+    >
+      <p className="text-gray-400 text-lg font-semibold tracking-widest">
+        <span className="gradient-text font-bold">{text1}</span>{' '}
+        <span className="text-white font-extrabold">{text2}</span>
       </p>
-      <p className="w-8 sm:w-12 h-[1px] sm:h-[2px] bg-gray-700"></p>
-    </div>
+      <motion.div 
+        className="w-8 sm:w-12 h-[2px] bg-gradient-to-r from-neon-cyan to-neon-magenta"
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      />
+    </motion.div>
   );
 };
 

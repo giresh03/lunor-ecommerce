@@ -6,6 +6,9 @@ import { ShopContext } from '../context/ShopContext';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { gsap } from 'gsap';
+import { useEffect } from 'react';
 
 const PlaceOrder = () => {
   const navigate = useNavigate();
@@ -24,6 +27,51 @@ const PlaceOrder = () => {
     phone: ''
   });
 
+  useEffect(() => {
+    // Use setTimeout to ensure DOM is fully rendered
+    const timer = setTimeout(() => {
+      const elements = document.querySelectorAll('.order-element');
+      if (elements.length > 0) {
+        try {
+          // Set initial state
+          gsap.set('.order-element', { opacity: 0, y: 30 });
+          // Animate to visible
+          gsap.to('.order-element', {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: 'power3.out'
+          });
+        } catch (error) {
+          // Fallback: ensure elements are visible if GSAP fails
+          console.error('GSAP animation error:', error);
+          elements.forEach(el => {
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+          });
+        }
+      }
+    }, 100);
+
+    // Safety fallback: ensure visibility after animation should complete
+    const safetyTimer = setTimeout(() => {
+      const elements = document.querySelectorAll('.order-element');
+      elements.forEach(el => {
+        const computedOpacity = window.getComputedStyle(el).opacity;
+        if (parseFloat(computedOpacity) < 0.1) {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }
+      });
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(safetyTimer);
+    };
+  }, []);
+
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
     setFormData((data) => ({ ...data, [name]: value }));
@@ -34,19 +82,30 @@ const PlaceOrder = () => {
     try {
       let orderItems = [];
 
+      if(!cartItems || typeof cartItems !== 'object' || Array.isArray(cartItems)){
+        toast.error('Cart is empty');
+        return;
+      }
+
       Object.keys(cartItems).forEach((itemId) => {
-        Object.keys(cartItems[itemId]).forEach((size) => {
-          if (cartItems[itemId][size] > 0) {
-            const itemInfo = structuredClone(products.find(product => product._id === itemId));
-            if (itemInfo) {
-              itemInfo.size = size;
-              itemInfo.quantity = cartItems[itemId][size];
-              orderItems.push(itemInfo);
+        if(cartItems[itemId] && typeof cartItems[itemId] === 'object'){
+          Object.keys(cartItems[itemId]).forEach((size) => {
+            if (cartItems[itemId][size] > 0) {
+              const itemInfo = structuredClone(products.find(product => product._id === itemId));
+              if (itemInfo) {
+                itemInfo.size = size;
+                itemInfo.quantity = cartItems[itemId][size];
+                orderItems.push(itemInfo);
+              }
             }
-          }
-        });
+          });
+        }
       });
-      console.log(formData);
+      
+      if(orderItems.length === 0){
+        toast.error('Cart is empty');
+        return;
+      }
       
       let orderData = {
         address: formData,
@@ -59,6 +118,7 @@ const PlaceOrder = () => {
           const response = await axios.post(`${backendUrl}/api/order/place`, orderData, { headers: { token } });
           if (response.data.success) {
             setCartItems({});
+            toast.success('Order placed successfully!');
             navigate('/orders');
           } else {
             toast.error(response.data.message);
@@ -69,58 +129,182 @@ const PlaceOrder = () => {
       }
     } catch (error) {
       console.error(error);
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message || 'Failed to place order');
     }
   };
 
   return (
-    <form onSubmit={onSubmitHandler} className='flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t'>
-      <div className='flex flex-col gap-4 w-full sm:max-w-[480px]'>
+    <div className='min-h-[80vh] border-t border-white/10'>
+      <form onSubmit={onSubmitHandler} className='flex flex-col sm:flex-row justify-between gap-8'>
+      <motion.div 
+        initial={{ opacity: 1, x: 0 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6 }}
+        className='flex flex-col gap-4 w-full sm:max-w-[480px] order-element'
+        style={{ opacity: 1 }}
+      >
         <div className='text-xl sm:text-2xl my-3'>
           <Title text1={'DELIVERY'} text2={'INFORMATION'} />
         </div>
-        <div className='flex gap-3'>
-          <input required onChange={onChangeHandler} name='firstName' value={formData.firstName} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='First name' />
-          <input required onChange={onChangeHandler} name='lastName' value={formData.lastName} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='Last name' />
+        <div className='flex gap-3 order-element'>
+          <motion.input
+            whileFocus={{ scale: 1.02, borderColor: '#00ffff' }}
+            required 
+            onChange={onChangeHandler} 
+            name='firstName' 
+            value={formData.firstName} 
+            className='glass rounded-lg border border-white/20 text-white placeholder-gray-500 py-3 px-4 w-full bg-dark-secondary/50 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/50 transition-all' 
+            type="text" 
+            placeholder='First name' 
+          />
+          <motion.input
+            whileFocus={{ scale: 1.02, borderColor: '#00ffff' }}
+            required 
+            onChange={onChangeHandler} 
+            name='lastName' 
+            value={formData.lastName} 
+            className='glass rounded-lg border border-white/20 text-white placeholder-gray-500 py-3 px-4 w-full bg-dark-secondary/50 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/50 transition-all' 
+            type="text" 
+            placeholder='Last name' 
+          />
         </div>
-        <input required onChange={onChangeHandler} name='email' value={formData.email} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="email" placeholder='Email address' />
-        <input required onChange={onChangeHandler} name='street' value={formData.street} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='Street' />
-        <div className='flex gap-3'>
-          <input required onChange={onChangeHandler} name='city' value={formData.city} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='City' />
-          <input required onChange={onChangeHandler} name='state' value={formData.state} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='State' />
+        <motion.input
+          whileFocus={{ scale: 1.02, borderColor: '#00ffff' }}
+          required 
+          onChange={onChangeHandler} 
+          name='email' 
+          value={formData.email} 
+          className='glass rounded-lg border border-white/20 text-white placeholder-gray-500 py-3 px-4 w-full bg-dark-secondary/50 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/50 transition-all order-element' 
+          type="email" 
+          placeholder='Email address' 
+        />
+        <motion.input
+          whileFocus={{ scale: 1.02, borderColor: '#00ffff' }}
+          required 
+          onChange={onChangeHandler} 
+          name='street' 
+          value={formData.street} 
+          className='glass rounded-lg border border-white/20 text-white placeholder-gray-500 py-3 px-4 w-full bg-dark-secondary/50 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/50 transition-all order-element' 
+          type="text" 
+          placeholder='Street' 
+        />
+        <div className='flex gap-3 order-element'>
+          <motion.input
+            whileFocus={{ scale: 1.02, borderColor: '#00ffff' }}
+            required 
+            onChange={onChangeHandler} 
+            name='city' 
+            value={formData.city} 
+            className='glass rounded-lg border border-white/20 text-white placeholder-gray-500 py-3 px-4 w-full bg-dark-secondary/50 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/50 transition-all' 
+            type="text" 
+            placeholder='City' 
+          />
+          <motion.input
+            whileFocus={{ scale: 1.02, borderColor: '#00ffff' }}
+            required 
+            onChange={onChangeHandler} 
+            name='state' 
+            value={formData.state} 
+            className='glass rounded-lg border border-white/20 text-white placeholder-gray-500 py-3 px-4 w-full bg-dark-secondary/50 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/50 transition-all' 
+            type="text" 
+            placeholder='State' 
+          />
         </div>
-        <div className='flex gap-3'>
-          <input required onChange={onChangeHandler} name='zipcode' value={formData.zipcode} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="number" placeholder='Zipcode' />
-          <input required onChange={onChangeHandler} name='country' value={formData.country} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='Country' />
+        <div className='flex gap-3 order-element'>
+          <motion.input
+            whileFocus={{ scale: 1.02, borderColor: '#00ffff' }}
+            required 
+            onChange={onChangeHandler} 
+            name='zipcode' 
+            value={formData.zipcode} 
+            className='glass rounded-lg border border-white/20 text-white placeholder-gray-500 py-3 px-4 w-full bg-dark-secondary/50 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/50 transition-all' 
+            type="number" 
+            placeholder='Zipcode' 
+          />
+          <motion.input
+            whileFocus={{ scale: 1.02, borderColor: '#00ffff' }}
+            required 
+            onChange={onChangeHandler} 
+            name='country' 
+            value={formData.country} 
+            className='glass rounded-lg border border-white/20 text-white placeholder-gray-500 py-3 px-4 w-full bg-dark-secondary/50 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/50 transition-all' 
+            type="text" 
+            placeholder='Country' 
+          />
         </div>
-        <input required onChange={onChangeHandler} name='phone' value={formData.phone} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="number" placeholder='Phone' />
-      </div>
-      <div className='mt-8'>
+        <motion.input
+          whileFocus={{ scale: 1.02, borderColor: '#00ffff' }}
+          required 
+          onChange={onChangeHandler} 
+          name='phone' 
+          value={formData.phone} 
+          className='glass rounded-lg border border-white/20 text-white placeholder-gray-500 py-3 px-4 w-full bg-dark-secondary/50 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/50 transition-all order-element' 
+          type="number" 
+          placeholder='Phone' 
+        />
+      </motion.div>
+      
+      <motion.div 
+        initial={{ opacity: 1, x: 0 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className='mt-8 order-element'
+        style={{ opacity: 1 }}
+      >
         <div className='mt-8 min-w-80'>
           <CartTotal />
         </div>
-        <div className='mt-12'>
+        <div className='mt-12 glass rounded-2xl border border-white/10 p-6'>
           <Title text1={'PAYMENT'} text2={'METHOD'} />
-          <div className='flex gap-3 flex-col lg:flex-row'>
-            <div onClick={() => setMethod('stripe')} className='flex items-center gap-3 border p-2 px-3 cursor-pointer'>
-              <p className={`min-w-3.5 h-3.5 border rounded-full ${method === 'stripe' ? 'bg-green-400' : ''}`}></p>
-              <img className={`h-5 mx-4`} src={assets.stripe_logo} alt="Stripe" />
-            </div>
-            <div onClick={() => setMethod('razorpay')} className='flex items-center gap-3 border p-2 px-3 cursor-pointer'>
-              <p className={`min-w-3.5 h-3.5 border rounded-full ${method === 'razorpay' ? 'bg-green-400' : ''}`} ></p>
-              <img className={`h-5 mx-4`} src={assets.razorpay_logo} alt="Razorpay" />
-            </div>
-            <div onClick={() => setMethod('cod')} className='flex items-center gap-3 border p-2 px-3 cursor-pointer'>
-              <p className={`min-w-3.5 h-3.5 border rounded-full ${method === 'cod' ? 'bg-green-400' : ''}`}></p>
-              <p className='text-gray-500 text-sm font-medium mx-4'>CASH ON DELIVERY</p>
-            </div>
+          <div className='flex gap-3 flex-col lg:flex-row mt-6'>
+            <motion.div 
+              whileHover={{ scale: 1.05, borderColor: '#00ffff' }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setMethod('stripe')} 
+              className={`flex items-center gap-3 glass rounded-lg border-2 p-3 cursor-pointer transition-all ${
+                method === 'stripe' ? 'border-neon-cyan glow-cyan' : 'border-white/20 hover:border-white/40'
+              }`}
+            >
+              <div className={`min-w-4 h-4 rounded-full border-2 ${method === 'stripe' ? 'bg-neon-cyan border-neon-cyan' : 'border-white/40'}`}></div>
+              <img className='h-5 mx-4 brightness-0 invert opacity-80' src={assets.stripe_logo} alt="Stripe" />
+            </motion.div>
+            <motion.div 
+              whileHover={{ scale: 1.05, borderColor: '#00ffff' }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setMethod('razorpay')} 
+              className={`flex items-center gap-3 glass rounded-lg border-2 p-3 cursor-pointer transition-all ${
+                method === 'razorpay' ? 'border-neon-cyan glow-cyan' : 'border-white/20 hover:border-white/40'
+              }`}
+            >
+              <div className={`min-w-4 h-4 rounded-full border-2 ${method === 'razorpay' ? 'bg-neon-cyan border-neon-cyan' : 'border-white/40'}`}></div>
+              <img className='h-5 mx-4 brightness-0 invert opacity-80' src={assets.razorpay_logo} alt="Razorpay" />
+            </motion.div>
+            <motion.div 
+              whileHover={{ scale: 1.05, borderColor: '#00ffff' }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setMethod('cod')} 
+              className={`flex items-center gap-3 glass rounded-lg border-2 p-3 cursor-pointer transition-all ${
+                method === 'cod' ? 'border-neon-cyan glow-cyan' : 'border-white/20 hover:border-white/40'
+              }`}
+            >
+              <div className={`min-w-4 h-4 rounded-full border-2 ${method === 'cod' ? 'bg-neon-cyan border-neon-cyan' : 'border-white/40'}`}></div>
+              <p className='text-white text-sm font-semibold mx-4'>CASH ON DELIVERY</p>
+            </motion.div>
           </div>
           <div className='w-full text-end mt-8'>
-            <button type='submit' className='bg-black text-white px-16 py-3 text-sm'>PLACE ORDER</button>
+            <motion.button 
+              whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(0, 255, 255, 0.5)' }}
+              whileTap={{ scale: 0.95 }}
+              type='submit' 
+              className='neon-button px-12 py-3 text-base'
+            >
+              PLACE ORDER
+            </motion.button>
           </div>
         </div>
-      </div>
-    </form>
+      </motion.div>
+      </form>
+    </div>
   );
 };
 

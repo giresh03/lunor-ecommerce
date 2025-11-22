@@ -1,30 +1,241 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Prata&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-a.active hr{
+:root {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #111111;
+  --bg-tertiary: #1a1a1a;
+  --accent-primary: #00ffff;
+  --accent-secondary: #ff00ff;
+  --text-primary: #ffffff;
+  --text-secondary: #e0e0e0;
+  --text-tertiary: #d0d0d0;
+  --border-color: #222222;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+/* Ensure all text is bright and visible */
+p, span, div, label, li, td, th {
+  color: var(--text-primary) !important;
+}
+
+/* Brighten gray text classes */
+.text-gray-400 {
+  color: #d0d0d0 !important;
+}
+
+.text-gray-300 {
+  color: #e8e8e8 !important;
+}
+
+.text-gray-500 {
+  color: #c0c0c0 !important;
+}
+
+.text-gray-600 {
+  color: #d8d8d8 !important;
+}
+
+.text-gray-700 {
+  color: #e0e0e0 !important;
+}
+
+.text-gray-800 {
+  color: #f0f0f0 !important;
+}
+
+/* Dark theme scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-secondary);
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(17, 17, 17, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Glow effects */
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5),
+              0 0 40px rgba(0, 255, 255, 0.3);
+}
+
+.glow-magenta {
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.5),
+              0 0 40px rgba(255, 0, 255, 0.3);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #00ffff 0%, #ff00ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animated border */
+.animated-border {
+  position: relative;
+  background: var(--bg-secondary);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}
+
+.animated-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, #00ffff, #ff00ff);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: rotate 3s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 3D card effect */
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.card-3d:hover {
+  transform: translateY(-10px) rotateX(5deg);
+}
+
+/* Neon button */
+.neon-button {
+  position: relative;
+  background: transparent;
+  border: 2px solid var(--accent-primary);
+  color: var(--accent-primary);
+  padding: 12px 32px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.neon-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--accent-primary);
+  transition: left 0.3s ease;
+  z-index: -1;
+}
+
+.neon-button:hover {
+  color: var(--bg-primary);
+  box-shadow: 0 0 20px var(--accent-primary);
+}
+
+.neon-button:hover::before {
+  left: 0;
+}
+
+.prata-regular {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+}
+
+a.active hr {
   display: block;
 }
 
-*{
-  font-family: Outfit;
-}
-.prata-regular {
-  font-family: "Prata", serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
-::-webkit-scrollbar{
-  display: none;
-}
-
-@media(max-width:640px){
-  a.active{
-    background-color: black;
-    color: white;
+@media(max-width:640px) {
+  a.active {
+    background: linear-gradient(135deg, #00ffff 0%, #ff00ff 100%);
+    color: var(--bg-primary);
   }
+}
+
+/* Logo white background removal for dark theme */
+.logo-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.logo-container img {
+  /* Remove white background - multiple techniques */
+  mix-blend-mode: screen; /* Makes white transparent */
+  filter: brightness(1.1) contrast(1.1);
+}
+
+/* Alternative approach - dark mode logo styling */
+.logo-dark-mode {
+  filter: brightness(0) invert(1); /* Makes logo white/light colored */
+}
+
+/* Or use mix-blend-mode to make white background transparent */
+.logo-transparent-bg {
+  background-blend-mode: multiply;
+  mix-blend-mode: lighten;
+}
+
+/* Best solution: Remove white background using CSS filters */
+.logo-no-white-bg {
+  filter: 
+    brightness(0) saturate(100%) 
+    invert(1) 
+    sepia(0%) 
+    saturate(0%) 
+    hue-rotate(0deg) 
+    brightness(1.1) 
+    contrast(1.1);
+}
+
+/* If logo has white background, use this wrapper */
+.logo-wrapper-dark {
+  background: var(--bg-secondary);
+  padding: 4px 8px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
 }
