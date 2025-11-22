@@ -119,7 +119,7 @@ const NavBar = () => {
         duration: 0.3, 
         ease: [0.23, 1, 0.32, 1]
       }}
-      className="fixed top-3 sm:top-4 md:top-6 left-1/2 transform -translate-x-1/2 w-[98%] sm:w-[96%] max-w-[1920px] z-[100] flex items-center justify-between py-2 sm:py-2.5 md:py-3 px-2 sm:px-3 md:px-4 lg:px-6"
+      className="fixed top-3 sm:top-4 md:top-6 left-1/2 transform -translate-x-1/2 w-[95%] sm:w-[92%] max-w-[1400px] z-[100] flex items-center justify-between py-2 sm:py-2.5 md:py-3 px-3 sm:px-4 md:px-5 lg:px-6"
         style={{
         background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%)',
         backdropFilter: 'blur(24px) saturate(180%)',
@@ -138,14 +138,14 @@ const NavBar = () => {
         <LunorLogo size="small" className="whitespace-nowrap" />
       </div>
 
-      {/* Navigation Links and Icons - Right aligned */}
-      <div className="hidden md:flex items-center gap-2 text-sm flex-1 justify-end min-w-0" style={{ opacity: 1, visibility: 'visible', overflow: 'visible', maxWidth: '100%', flexShrink: 1 }}>
-        <ul className="flex items-center gap-1 text-sm flex-shrink-0 whitespace-nowrap" style={{ opacity: 1, visibility: 'visible', listStyle: 'none', padding: 0, margin: 0 }}>
+      {/* Navigation Links - Centered */}
+      <div className="hidden md:flex items-center gap-1 text-sm flex-1 justify-center min-w-0 px-2" style={{ opacity: 1, visibility: 'visible', overflow: 'visible', flexShrink: 1 }}>
+        <ul className="flex items-center gap-0.5 text-sm flex-shrink-0 whitespace-nowrap" style={{ opacity: 1, visibility: 'visible', listStyle: 'none', padding: 0, margin: 0 }}>
         <li className="nav-item" style={{ opacity: 1, visibility: 'visible' }}>
           <NavLink 
             to="/" 
             className={({ isActive }) => 
-              `relative px-4 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm ${
+              `relative px-3 py-2 rounded-lg transition-all duration-300 font-medium text-xs ${
                 isActive 
                   ? 'text-white bg-white/10' 
                   : 'text-white/80 hover:text-white hover:bg-white/5'
@@ -171,7 +171,7 @@ const NavBar = () => {
           <NavLink 
             to="/collection" 
             className={({ isActive }) => 
-              `relative px-4 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm ${
+              `relative px-3 py-2 rounded-lg transition-all duration-300 font-medium text-xs ${
                 isActive 
                   ? 'text-white bg-white/10' 
                   : 'text-white/80 hover:text-white hover:bg-white/5'
@@ -197,7 +197,7 @@ const NavBar = () => {
           <NavLink 
             to="/about" 
             className={({ isActive }) => 
-              `relative px-4 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm ${
+              `relative px-3 py-2 rounded-lg transition-all duration-300 font-medium text-xs ${
                 isActive 
                   ? 'text-white bg-white/10' 
                   : 'text-white/80 hover:text-white hover:bg-white/5'
@@ -223,7 +223,7 @@ const NavBar = () => {
           <NavLink 
             to="/contact" 
             className={({ isActive }) => 
-              `relative px-4 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm ${
+              `relative px-3 py-2 rounded-lg transition-all duration-300 font-medium text-xs ${
                 isActive 
                   ? 'text-white bg-white/10' 
                   : 'text-white/80 hover:text-white hover:bg-white/5'
@@ -249,7 +249,7 @@ const NavBar = () => {
           <NavLink 
             to="/cart" 
             className={({ isActive }) => 
-              `relative px-4 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm ${
+              `relative px-3 py-2 rounded-lg transition-all duration-300 font-medium text-xs ${
                 isActive 
                   ? 'text-white bg-white/10' 
                   : 'text-white/80 hover:text-white hover:bg-white/5'
@@ -280,7 +280,7 @@ const NavBar = () => {
         </li>
         <li className="nav-item profile-nav-container relative" style={{ opacity: 1, visibility: 'visible' }} ref={profileNavRef}>
           <div
-            className="relative px-4 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm text-white/80 hover:text-white cursor-pointer"
+            className="relative px-3 py-2 rounded-lg transition-all duration-300 font-medium text-xs text-white/80 hover:text-white cursor-pointer"
             onClick={() => {
               if (token) {
                 setShowProfileDropdown(!showProfileDropdown);
@@ -356,8 +356,8 @@ const NavBar = () => {
         </li>
         </ul>
         
-        {/* Profile and Cart Icons - Part of right section */}
-        <div className="flex items-center gap-2 nav-item flex-shrink-0 ml-2" style={{ opacity: 1, visibility: 'visible', display: 'flex !important', alignItems: 'center', flexShrink: 0, position: 'relative', zIndex: 100, width: 'auto', minWidth: 'auto' }}>
+        {/* Profile and Cart Icons - Right section */}
+        <div className="flex items-center gap-1.5 nav-item flex-shrink-0 ml-1" style={{ opacity: 1, visibility: 'visible', display: 'flex !important', alignItems: 'center', flexShrink: 0, position: 'relative', zIndex: 100, width: 'auto', minWidth: 'auto' }}>
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
