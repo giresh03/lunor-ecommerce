@@ -47,12 +47,19 @@ const corsOptions = {
       process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null,
     ].filter(Boolean);
     
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    // Allow all Vercel frontend URLs (they have dynamic subdomains)
+    const isVercelFrontend = origin.includes('.vercel.app') || origin.includes('.vercel.dev');
+    // Allow all Render admin URLs
+    const isRenderAdmin = origin.includes('.onrender.com');
+    
+    if (allowedOrigins.indexOf(origin) !== -1 || isVercelFrontend || isRenderAdmin) {
       callback(null, true);
     } else if (process.env.NODE_ENV !== 'production') {
       // In development, allow all origins
       callback(null, true);
     } else {
+      // Log the rejected origin for debugging
+      console.log('CORS blocked origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
