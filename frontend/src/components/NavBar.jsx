@@ -121,12 +121,12 @@ const NavBar = () => {
       }}
       className="fixed top-3 sm:top-4 md:top-6 left-1/2 transform -translate-x-1/2 w-[98%] sm:w-[96%] max-w-[1920px] z-[100] flex items-center justify-between py-2 sm:py-2.5 md:py-3 px-2 sm:px-3 md:px-4 lg:px-6"
         style={{
-        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.98) 100%)',
+        background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%)',
         backdropFilter: 'blur(24px) saturate(180%)',
         WebkitBackdropFilter: 'blur(24px) saturate(180%)',
         borderRadius: '16px',
-        border: '1px solid rgba(0, 0, 0, 0.1)',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05) inset',
+        border: '1px solid rgba(255, 255, 255, 0.15)',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05) inset',
         opacity: 1,
         visibility: 'visible',
         overflow: 'visible',
@@ -145,10 +145,10 @@ const NavBar = () => {
           <NavLink 
             to="/" 
             className={({ isActive }) => 
-              `relative px-3 py-2 rounded-lg transition-all duration-300 font-medium text-xs ${
+              `relative px-4 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm ${
                 isActive 
-                  ? 'text-black bg-black/10' 
-                  : 'text-black/70 hover:text-black hover:bg-black/5'
+                  ? 'text-white bg-white/10' 
+                  : 'text-white/80 hover:text-white hover:bg-white/5'
               }`
             }
           >
@@ -158,7 +158,7 @@ const NavBar = () => {
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-black/10 rounded-lg border border-black/20"
+                    className="absolute inset-0 bg-white/10 rounded-lg border border-white/20"
                     initial={false}
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
@@ -171,10 +171,10 @@ const NavBar = () => {
           <NavLink 
             to="/collection" 
             className={({ isActive }) => 
-              `relative px-3 py-2 rounded-lg transition-all duration-300 font-medium text-xs ${
+              `relative px-4 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm ${
                 isActive 
-                  ? 'text-black bg-black/10' 
-                  : 'text-black/70 hover:text-black hover:bg-black/5'
+                  ? 'text-white bg-white/10' 
+                  : 'text-white/80 hover:text-white hover:bg-white/5'
               }`
             }
           >
@@ -184,7 +184,7 @@ const NavBar = () => {
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-black/10 rounded-lg border border-black/20"
+                    className="absolute inset-0 bg-white/10 rounded-lg border border-white/20"
                     initial={false}
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
@@ -197,10 +197,10 @@ const NavBar = () => {
           <NavLink 
             to="/about" 
             className={({ isActive }) => 
-              `relative px-3 py-2 rounded-lg transition-all duration-300 font-medium text-xs ${
+              `relative px-4 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm ${
                 isActive 
-                  ? 'text-black bg-black/10' 
-                  : 'text-black/70 hover:text-black hover:bg-black/5'
+                  ? 'text-white bg-white/10' 
+                  : 'text-white/80 hover:text-white hover:bg-white/5'
               }`
             }
           >
@@ -210,7 +210,7 @@ const NavBar = () => {
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-black/10 rounded-lg border border-black/20"
+                    className="absolute inset-0 bg-white/10 rounded-lg border border-white/20"
                     initial={false}
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
@@ -223,10 +223,10 @@ const NavBar = () => {
           <NavLink 
             to="/contact" 
             className={({ isActive }) => 
-              `relative px-3 py-2 rounded-lg transition-all duration-300 font-medium text-xs ${
+              `relative px-4 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm ${
                 isActive 
-                  ? 'text-black bg-black/10' 
-                  : 'text-black/70 hover:text-black hover:bg-black/5'
+                  ? 'text-white bg-white/10' 
+                  : 'text-white/80 hover:text-white hover:bg-white/5'
               }`
             }
           >
@@ -236,7 +236,7 @@ const NavBar = () => {
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-black/10 rounded-lg border border-black/20"
+                    className="absolute inset-0 bg-white/10 rounded-lg border border-white/20"
                     initial={false}
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
@@ -249,10 +249,10 @@ const NavBar = () => {
           <NavLink 
             to="/cart" 
             className={({ isActive }) => 
-              `relative px-3 py-2 rounded-lg transition-all duration-300 font-medium text-xs ${
+              `relative px-4 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm ${
                 isActive 
-                  ? 'text-black bg-black/10' 
-                  : 'text-black/70 hover:text-black hover:bg-black/5'
+                  ? 'text-white bg-white/10' 
+                  : 'text-white/80 hover:text-white hover:bg-white/5'
               }`
             }
           >
@@ -269,7 +269,7 @@ const NavBar = () => {
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-black/10 rounded-lg border border-black/20"
+                    className="absolute inset-0 bg-white/10 rounded-lg border border-white/20"
                     initial={false}
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
@@ -280,7 +280,7 @@ const NavBar = () => {
         </li>
         <li className="nav-item profile-nav-container relative" style={{ opacity: 1, visibility: 'visible' }} ref={profileNavRef}>
           <div
-            className="relative px-3 py-2 rounded-lg transition-all duration-300 font-medium text-xs text-black/70 hover:text-black cursor-pointer"
+            className="relative px-4 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm text-white/80 hover:text-white cursor-pointer"
             onClick={() => {
               if (token) {
                 setShowProfileDropdown(!showProfileDropdown);
@@ -362,7 +362,7 @@ const NavBar = () => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setShowSearch(true)} 
-          className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg bg-black/10 hover:bg-black/20 border border-black/20 hover:border-black/30 transition-all duration-200 touch-manipulation"
+          className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 transition-all duration-200 touch-manipulation"
           style={{ 
             opacity: 1, 
             visibility: 'visible', 
@@ -378,7 +378,7 @@ const NavBar = () => {
           src={assets.search_icon} 
             className="w-4 h-4 sm:w-5 sm:h-5 brightness-0 invert" 
           alt="Search" 
-            style={{ opacity: 1, filter: 'brightness(0)', display: 'block' }}
+            style={{ opacity: 1, filter: 'brightness(0) invert(1)', display: 'block' }}
           />
         </motion.button>
 
@@ -412,7 +412,7 @@ const NavBar = () => {
                 navigate('/login');
               }
             }} 
-            className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg bg-black/10 hover:bg-black/20 border border-black/20 hover:border-black/30 transition-all duration-200 touch-manipulation relative"
+            className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 transition-all duration-200 touch-manipulation relative"
             style={{ 
               opacity: 1, 
               visibility: 'visible', 
@@ -439,7 +439,7 @@ const NavBar = () => {
               <svg 
                 className="w-4 h-4 sm:w-5 sm:h-5" 
                 fill="none" 
-                stroke="black" 
+                stroke="white" 
                 viewBox="0 0 24 24"
                 style={{ opacity: 1, display: 'block', width: '20px', height: '20px', pointerEvents: 'none' }}
               >
@@ -630,7 +630,7 @@ const NavBar = () => {
             src={assets.search_icon} 
             className="w-4 h-4 brightness-0 invert" 
             alt="Search" 
-            style={{ opacity: 1, filter: 'brightness(0)', display: 'block' }}
+            style={{ opacity: 1, filter: 'brightness(0) invert(1)', display: 'block' }}
           />
         </motion.button>
 
@@ -688,11 +688,11 @@ const NavBar = () => {
               src={assets.menu_icon} 
               className='w-5 h-5 brightness-0 invert' 
               alt="Menu"
-              style={{ opacity: 1, filter: 'brightness(0)', display: 'block' }}
+              style={{ opacity: 1, filter: 'brightness(0) invert(1)', display: 'block' }}
             />
           ) : (
             <svg 
-              className='w-5 h-5 text-black' 
+              className='w-5 h-5 text-white' 
               fill='none' 
               stroke='currentColor' 
               viewBox='0 0 24 24'
