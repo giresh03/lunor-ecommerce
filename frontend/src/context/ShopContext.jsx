@@ -10,8 +10,21 @@ export const ShopContext = createContext();
 const ShopContextProvider = (props) => { 
     const currency = '₹'; 
     const delivery_fee = 10; 
-    const backendUrl = import.meta.env.VITE_BACKEND_URL
-    console.log(backendUrl)
+    // Get backend URL from environment, with smart fallback
+    const getBackendUrl = () => {
+        // First check environment variable
+        if (import.meta.env.VITE_BACKEND_URL) {
+            return import.meta.env.VITE_BACKEND_URL;
+        }
+        // If localhost, use local backend
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            return 'http://localhost:8000';
+        }
+        // Production fallback - use Render backend URL
+        return 'https://lunor-ko-backend.onrender.com';
+    }
+    const backendUrl = getBackendUrl();
+    console.log('Backend URL:', backendUrl || 'Not configured - backend features will be disabled')
     const [search, setSearch] = useState('');
     const [showSearch, setShowSearch] = useState(false);
     const [cartItems, setCartItems] = useState({});
@@ -141,24 +154,47 @@ const ShopContextProvider = (props) => {
     }
 
     const getProductsData = async () => {
+        if (!backendUrl) {
+            console.warn('Backend URL not configured. Some features may not work.');
+            return;
+        }
         try {
-            const response = await axios.get(backendUrl + '/api/product/list')
+            console.log('Fetching products from:', backendUrl + '/api/product/list');
+            const response = await axios.get(backendUrl + '/api/product/list', {
+                timeout: 10000 // 10 second timeout (longer for Render cold starts)
+            })
             if(response.data.success){
-                setProducts(response.data.products);
+                console.log('Products loaded:', response.data.products?.length || 0);
+                setProducts(response.data.products || []);
             }
             else{
-                toast.error(response.data.message)
+                console.error('Failed to load products:', response.data.message);
+                toast.error(response.data.message || 'Failed to load products')
             }
         }
         catch (error){
-            console.log(error)
-            toast.error(error.message)
+            console.error('Failed to fetch products:', error.message);
+            console.error('Backend URL:', backendUrl);
+            // Show error toast for debugging
+            if (error.code === 'ERR_NETWORK' || error.code === 'ECONNABORTED') {
+                toast.error('Cannot connect to backend. Please check if backend is deployed.');
+            } else {
+                toast.error('Failed to load products: ' + (error.response?.data?.message || error.message))
+            }
+            // Set empty products array on error
+            setProducts([]);
         }
     }
 
     const getUserCart = async (token) => {
+        if (!backendUrl || !token) {
+            return;
+        }
         try{
-            const response = await axios.post(backendUrl + '/api/cart/get', {}, {headers: {token}})
+            const response = await axios.post(backendUrl + '/api/cart/get', {}, {
+                headers: {token},
+                timeout: 5000
+            })
             if(response.data.success){
                 const cartData = response.data.message;
                 // Ensure cartData is always an object
@@ -170,12 +206,12 @@ const ShopContextProvider = (props) => {
             }
         }
         catch (error){
-            console.log(error)
+            console.log('Failed to fetch cart:', error.message)
             // Don't show error if it's just a network issue, cart can work locally
-            if(error.response && error.response.status !== 401){
+            if(error.response && error.response.status !== 401 && error.code !== 'ERR_NETWORK'){
                 toast.error(error.message)
             }
-            setCartItems({});
+            // Keep local cart items if backend fails
         }
     }
     useEffect(()=>{

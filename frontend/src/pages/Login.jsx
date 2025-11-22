@@ -28,9 +28,18 @@ const Login = () => {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+    
+    if (!backendUrl) {
+      toast.error('Backend not configured. Please contact administrator.');
+      console.error('Backend URL is not set. Set VITE_BACKEND_URL in Vercel environment variables.');
+      return;
+    }
+    
     try{
       if(currentState === 'Sign Up'){
-        const response = await axios.post(backendUrl + '/api/user/register', {name, email, password})
+        const response = await axios.post(backendUrl + '/api/user/register', {name, email, password}, {
+          timeout: 10000
+        })
         if(response.data.success){
           setToken(response.data.token)
           localStorage.setItem('token', response.data.token)
@@ -41,7 +50,9 @@ const Login = () => {
         }
       }
       else{
-        const response = await axios.post(backendUrl + '/api/user/login', {email, password})
+        const response = await axios.post(backendUrl + '/api/user/login', {email, password}, {
+          timeout: 10000
+        })
         if(response.data.success){
           setToken(response.data.token)
           localStorage.setItem('token', response.data.token)
@@ -54,7 +65,11 @@ const Login = () => {
     }
     catch (error){
       console.log(error);
-      toast.error(error.response?.data?.message || error.message)
+      if (error.code === 'ERR_NETWORK' || error.code === 'ECONNABORTED') {
+        toast.error('Cannot connect to server. Backend may not be available.');
+      } else {
+        toast.error(error.response?.data?.message || error.message || 'An error occurred')
+      }
     }
   }
 

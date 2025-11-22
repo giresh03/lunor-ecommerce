@@ -9,6 +9,9 @@ const Hero = () => {
     const titleRef = useRef(null);
     const videoRef = useRef(null);
     const [isMuted, setIsMuted] = useState(true);
+    const [videoError, setVideoError] = useState(false);
+    const [videoLoaded, setVideoLoaded] = useState(false);
+    const [videoPlaying, setVideoPlaying] = useState(false);
 
     useEffect(() => {
         // GSAP animations - ensure content is visible
@@ -40,19 +43,63 @@ const Hero = () => {
 
     // Auto-play video
     useEffect(() => {
-        if (videoRef.current) {
+        if (videoRef.current && !videoError) {
             const video = videoRef.current;
             video.muted = isMuted;
-            video.play().catch(err => console.log('Video autoplay prevented:', err));
+            
+            // Handle video loading and playing
+            const handleVideoLoad = () => {
+                setVideoLoaded(true);
+                video.play().then(() => {
+                    setVideoPlaying(true);
+                }).catch(err => {
+                    console.log('Video autoplay prevented:', err);
+                    setVideoError(true);
+                });
+            };
+            
+            const handleVideoPlay = () => {
+                setVideoPlaying(true);
+            };
+            
+            const handleVideoError = () => {
+                console.log('Video failed to load, using poster image');
+                setVideoError(true);
+                setVideoLoaded(false);
+            };
+            
+            video.addEventListener('loadeddata', handleVideoLoad);
+            video.addEventListener('play', handleVideoPlay);
+            video.addEventListener('playing', handleVideoPlay);
+            video.addEventListener('error', handleVideoError);
+            
+            // Try to load video
+            video.load();
+            
+            return () => {
+                video.removeEventListener('loadeddata', handleVideoLoad);
+                video.removeEventListener('play', handleVideoPlay);
+                video.removeEventListener('playing', handleVideoPlay);
+                video.removeEventListener('error', handleVideoError);
+            };
         }
-    }, [isMuted]);
+    }, [isMuted, videoError]);
 
     const handleVideoEnd = () => {
         // Loop video
-        if (videoRef.current) {
+        if (videoRef.current && !videoError) {
             videoRef.current.currentTime = 0;
-            videoRef.current.play();
+            videoRef.current.play().catch(err => {
+                console.log('Video play error:', err);
+                setVideoError(true);
+            });
         }
+    };
+    
+    const handleVideoLoadError = () => {
+        console.log('Video failed to load, using poster image instead');
+        setVideoError(true);
+        setVideoLoaded(false);
     };
 
     const toggleMute = () => {
@@ -69,30 +116,36 @@ const Hero = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
             className='relative w-full min-h-screen flex items-center justify-center overflow-hidden'
-            style={{ minHeight: '100vh' }}
+            style={{ minHeight: '100vh', position: 'relative' }}
         >
-            {/* Full Screen Background Video */}
-            <div className='fixed inset-0 w-full h-full z-0'>
+            {/* Full Screen Background Image - Only on Home page */}
+            <div className='absolute inset-0 w-full h-full z-0'>
                 <motion.div
-                    initial={{ opacity: 0, scale: 1.1 }}
+                    initial={{ opacity: 0, scale: 1.05 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.8, ease: 'easeInOut' }}
                     className='absolute inset-0 w-full h-full'
                 >
-                    <video
-                        ref={videoRef}
-                        className='w-full h-full object-cover'
-                        src={assets.video2}
-                        muted={isMuted}
-                        loop
-                        playsInline
-                        autoPlay
-                        onEnded={handleVideoEnd}
-                        poster={assets.hero_img}
-                        style={{ minHeight: '100vh', minWidth: '100vw' }}
+                    {/* Hero Background Image */}
+                    <img
+                        src={assets.hero_img}
+                        alt="Hero background"
+                        className='absolute inset-0 w-full h-full object-cover'
+                        style={{ 
+                            minHeight: '100vh', 
+                            minWidth: '100vw',
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                            objectPosition: 'center'
+                        }}
+                        onError={(e) => {
+                            console.log('Hero image failed to load');
+                            e.target.style.display = 'none';
+                        }}
                     />
-                    {/* Dark overlay for better text readability */}
-                    <div className='absolute inset-0 bg-gradient-to-b from-dark-primary/30 via-dark-primary/20 to-dark-primary/40 pointer-events-none' />
+                    {/* Light overlay for better text readability */}
+                    <div className='absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/30 pointer-events-none' />
                 </motion.div>
             </div>
 
@@ -160,41 +213,6 @@ const Hero = () => {
                 </div>
             </div>
 
-            {/* Unmute Button - Instagram Style */}
-            <motion.button
-                onClick={toggleMute}
-                className='fixed bottom-6 right-6 z-40 bg-black/40 backdrop-blur-md rounded-full p-3 border border-white/30 hover:border-neon-cyan transition-all group shadow-xl'
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-            >
-                {isMuted ? (
-                    <motion.svg
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className='w-6 h-6 text-white'
-                        fill='none'
-                        stroke='currentColor'
-                        viewBox='0 0 24 24'
-                    >
-                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z' />
-                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2' />
-                    </motion.svg>
-                ) : (
-                    <motion.svg
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className='w-6 h-6 text-neon-cyan'
-                        fill='none'
-                        stroke='currentColor'
-                        viewBox='0 0 24 24'
-                    >
-                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z' />
-                    </motion.svg>
-                )}
-                <span className='absolute -bottom-8 right-0 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap'>
-                    {isMuted ? 'Tap to unmute' : 'Tap to mute'}
-                </span>
-            </motion.button>
         </motion.div>
     );
 };

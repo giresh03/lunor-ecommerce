@@ -119,34 +119,36 @@ const NavBar = () => {
         duration: 0.3, 
         ease: [0.23, 1, 0.32, 1]
       }}
-      className="fixed top-3 sm:top-4 md:top-6 left-1/2 transform -translate-x-1/2 w-[95%] sm:w-[92%] max-w-7xl z-[100] flex items-center justify-between py-2 sm:py-2.5 md:py-3 px-3 sm:px-4 md:px-6 lg:px-8"
-      style={{
-        background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.9) 100%)',
+      className="fixed top-3 sm:top-4 md:top-6 left-1/2 transform -translate-x-1/2 w-[98%] sm:w-[96%] max-w-[1920px] z-[100] flex items-center justify-between py-2 sm:py-2.5 md:py-3 px-2 sm:px-3 md:px-4 lg:px-6"
+        style={{
+        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.98) 100%)',
         backdropFilter: 'blur(24px) saturate(180%)',
         WebkitBackdropFilter: 'blur(24px) saturate(180%)',
         borderRadius: '16px',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05) inset',
+        border: '1px solid rgba(0, 0, 0, 0.1)',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05) inset',
         opacity: 1,
         visibility: 'visible',
-        overflow: 'visible'
+        overflow: 'visible',
+        maxWidth: '100%'
       }}
     >
-      {/* Logo */}
+      {/* Logo - Left aligned */}
       <div className="nav-item flex-shrink-0" style={{ opacity: 1, visibility: 'visible' }}>
         <LunorLogo size="small" className="whitespace-nowrap" />
       </div>
 
-      {/* Navigation Links */}
-      <ul className="hidden md:flex items-center gap-1 text-sm mx-auto flex-1 justify-center" style={{ opacity: 1, visibility: 'visible' }}>
+      {/* Navigation Links and Icons - Right aligned */}
+      <div className="hidden md:flex items-center gap-1.5 text-sm flex-1 justify-end min-w-0" style={{ opacity: 1, visibility: 'visible', overflow: 'visible', maxWidth: '100%', flexShrink: 1 }}>
+        <ul className="flex items-center gap-0.5 text-sm flex-shrink-0 whitespace-nowrap" style={{ opacity: 1, visibility: 'visible', listStyle: 'none', padding: 0, margin: 0 }}>
         <li className="nav-item" style={{ opacity: 1, visibility: 'visible' }}>
           <NavLink 
             to="/" 
             className={({ isActive }) => 
-              `relative px-5 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm ${
+              `relative px-3 py-2 rounded-lg transition-all duration-300 font-medium text-xs ${
                 isActive 
-                  ? 'text-white' 
-                  : 'text-white/70 hover:text-white'
+                  ? 'text-black bg-black/10' 
+                  : 'text-black/70 hover:text-black hover:bg-black/5'
               }`
             }
           >
@@ -156,7 +158,7 @@ const NavBar = () => {
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-white/10 rounded-lg border border-white/20"
+                    className="absolute inset-0 bg-black/10 rounded-lg border border-black/20"
                     initial={false}
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
@@ -169,10 +171,10 @@ const NavBar = () => {
           <NavLink 
             to="/collection" 
             className={({ isActive }) => 
-              `relative px-5 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm ${
+              `relative px-3 py-2 rounded-lg transition-all duration-300 font-medium text-xs ${
                 isActive 
-                  ? 'text-white' 
-                  : 'text-white/70 hover:text-white'
+                  ? 'text-black bg-black/10' 
+                  : 'text-black/70 hover:text-black hover:bg-black/5'
               }`
             }
           >
@@ -182,7 +184,7 @@ const NavBar = () => {
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-white/10 rounded-lg border border-white/20"
+                    className="absolute inset-0 bg-black/10 rounded-lg border border-black/20"
                     initial={false}
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
@@ -195,10 +197,10 @@ const NavBar = () => {
           <NavLink 
             to="/about" 
             className={({ isActive }) => 
-              `relative px-5 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm ${
+              `relative px-3 py-2 rounded-lg transition-all duration-300 font-medium text-xs ${
                 isActive 
-                  ? 'text-white' 
-                  : 'text-white/70 hover:text-white'
+                  ? 'text-black bg-black/10' 
+                  : 'text-black/70 hover:text-black hover:bg-black/5'
               }`
             }
           >
@@ -208,7 +210,7 @@ const NavBar = () => {
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-white/10 rounded-lg border border-white/20"
+                    className="absolute inset-0 bg-black/10 rounded-lg border border-black/20"
                     initial={false}
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
@@ -221,10 +223,10 @@ const NavBar = () => {
           <NavLink 
             to="/contact" 
             className={({ isActive }) => 
-              `relative px-5 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm ${
+              `relative px-3 py-2 rounded-lg transition-all duration-300 font-medium text-xs ${
                 isActive 
-                  ? 'text-white' 
-                  : 'text-white/70 hover:text-white'
+                  ? 'text-black bg-black/10' 
+                  : 'text-black/70 hover:text-black hover:bg-black/5'
               }`
             }
           >
@@ -234,7 +236,7 @@ const NavBar = () => {
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-white/10 rounded-lg border border-white/20"
+                    className="absolute inset-0 bg-black/10 rounded-lg border border-black/20"
                     initial={false}
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
@@ -247,10 +249,10 @@ const NavBar = () => {
           <NavLink 
             to="/cart" 
             className={({ isActive }) => 
-              `relative px-5 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm ${
+              `relative px-3 py-2 rounded-lg transition-all duration-300 font-medium text-xs ${
                 isActive 
-                  ? 'text-white' 
-                  : 'text-white/70 hover:text-white'
+                  ? 'text-black bg-black/10' 
+                  : 'text-black/70 hover:text-black hover:bg-black/5'
               }`
             }
           >
@@ -267,7 +269,7 @@ const NavBar = () => {
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-white/10 rounded-lg border border-white/20"
+                    className="absolute inset-0 bg-black/10 rounded-lg border border-black/20"
                     initial={false}
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
@@ -278,7 +280,7 @@ const NavBar = () => {
         </li>
         <li className="nav-item profile-nav-container relative" style={{ opacity: 1, visibility: 'visible' }} ref={profileNavRef}>
           <div
-            className="relative px-5 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm text-white/70 hover:text-white cursor-pointer"
+            className="relative px-3 py-2 rounded-lg transition-all duration-300 font-medium text-xs text-black/70 hover:text-black cursor-pointer"
             onClick={() => {
               if (token) {
                 setShowProfileDropdown(!showProfileDropdown);
@@ -352,15 +354,15 @@ const NavBar = () => {
             )}
           </div>
         </li>
-      </ul>
-
-      {/* Profile and Cart Icons */}
-      <div className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5 nav-item flex-shrink-0" style={{ opacity: 1, visibility: 'visible', display: 'flex !important', alignItems: 'center', flexShrink: 0, position: 'relative', zIndex: 100, width: 'auto', minWidth: 'auto' }}>
+        </ul>
+        
+        {/* Profile and Cart Icons - Part of right section */}
+        <div className="flex items-center gap-1 nav-item flex-shrink-0 ml-1" style={{ opacity: 1, visibility: 'visible', display: 'flex !important', alignItems: 'center', flexShrink: 0, position: 'relative', zIndex: 100, width: 'auto', minWidth: 'auto' }}>
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setShowSearch(true)} 
-          className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 transition-all duration-200 touch-manipulation"
+          className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg bg-black/10 hover:bg-black/20 border border-black/20 hover:border-black/30 transition-all duration-200 touch-manipulation"
           style={{ 
             opacity: 1, 
             visibility: 'visible', 
@@ -376,7 +378,7 @@ const NavBar = () => {
           src={assets.search_icon} 
             className="w-4 h-4 sm:w-5 sm:h-5 brightness-0 invert" 
           alt="Search" 
-            style={{ opacity: 1, filter: 'brightness(0) invert(1)', display: 'block' }}
+            style={{ opacity: 1, filter: 'brightness(0)', display: 'block' }}
           />
         </motion.button>
 
@@ -410,7 +412,7 @@ const NavBar = () => {
                 navigate('/login');
               }
             }} 
-            className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 transition-all duration-200 touch-manipulation relative"
+            className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg bg-black/10 hover:bg-black/20 border border-black/20 hover:border-black/30 transition-all duration-200 touch-manipulation relative"
             style={{ 
               opacity: 1, 
               visibility: 'visible', 
@@ -437,7 +439,7 @@ const NavBar = () => {
               <svg 
                 className="w-4 h-4 sm:w-5 sm:h-5" 
                 fill="none" 
-                stroke="white" 
+                stroke="black" 
                 viewBox="0 0 24 24"
                 style={{ opacity: 1, display: 'block', width: '20px', height: '20px', pointerEvents: 'none' }}
               >
@@ -566,7 +568,7 @@ const NavBar = () => {
               height="16" 
               viewBox="0 0 24 24" 
               fill="none" 
-              stroke="white" 
+              stroke="black" 
               strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -606,11 +608,16 @@ const NavBar = () => {
             )}
           </motion.button>
         </Link>
+        </div>
+      </div>
+
+      {/* Mobile Icons - Visible only on mobile */}
+      <div className="flex items-center gap-2 md:hidden nav-item flex-shrink-0" style={{ opacity: 1, visibility: 'visible' }}>
         <motion.button
-          whileHover={{ rotate: 90 }}
+          whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
-          onClick={()=>setVisible(true)} 
-          className='w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 transition-all duration-200 sm:hidden touch-manipulation'
+          onClick={() => setShowSearch(true)} 
+          className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 transition-all duration-200 touch-manipulation"
           style={{ 
             opacity: 1, 
             visibility: 'visible', 
@@ -620,11 +627,80 @@ const NavBar = () => {
           }}
         >
           <img 
-          src={assets.menu_icon} 
-            className='w-4 h-4 sm:w-5 sm:h-5 brightness-0 invert' 
-            alt="Menu"
-            style={{ opacity: 1, filter: 'brightness(0) invert(1)', display: 'block' }}
-        />
+            src={assets.search_icon} 
+            className="w-4 h-4 brightness-0 invert" 
+            alt="Search" 
+            style={{ opacity: 1, filter: 'brightness(0)', display: 'block' }}
+          />
+        </motion.button>
+
+        <Link 
+          to="/cart" 
+          className="relative flex items-center justify-center touch-manipulation"
+          style={{ WebkitTapHighlightColor: 'transparent' }}
+        >
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            className="w-8 h-8 flex items-center justify-center rounded-lg bg-gradient-to-r from-neon-cyan/20 to-neon-magenta/20 border-2 border-neon-cyan/50 transition-all duration-200 relative cursor-pointer touch-manipulation"
+            style={{ 
+              opacity: 1, 
+              visibility: 'visible',
+              minWidth: '32px',
+              minHeight: '32px',
+              WebkitTapHighlightColor: 'transparent'
+            }}
+          >
+            <svg 
+              width="16" 
+              height="16" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="black" 
+              strokeWidth="2.5"
+              className="w-4 h-4"
+            >
+              <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            {getCartCount() > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center bg-gradient-to-r from-neon-cyan to-neon-magenta text-white rounded-full text-[8px] font-bold">
+                {getCartCount()}
+              </span>
+            )}
+          </motion.button>
+        </Link>
+
+        <motion.button
+          whileHover={{ rotate: 90 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={()=>setVisible(true)} 
+          className='w-8 h-8 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 transition-all duration-200 touch-manipulation'
+          style={{ 
+            opacity: 1, 
+            visibility: 'visible', 
+            minWidth: '32px', 
+            minHeight: '32px',
+            WebkitTapHighlightColor: 'transparent'
+          }}
+        >
+          {assets.menu_icon ? (
+            <img 
+              src={assets.menu_icon} 
+              className='w-5 h-5 brightness-0 invert' 
+              alt="Menu"
+              style={{ opacity: 1, filter: 'brightness(0)', display: 'block' }}
+            />
+          ) : (
+            <svg 
+              className='w-5 h-5 text-black' 
+              fill='none' 
+              stroke='currentColor' 
+              viewBox='0 0 24 24'
+              style={{ display: 'block' }}
+            >
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 6h16M4 12h16M4 18h16' />
+            </svg>
+          )}
         </motion.button>
       </div>
       
