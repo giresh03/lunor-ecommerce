@@ -609,7 +609,6 @@ const NavBar = () => {
             )}
           </motion.button>
         </Link>
-        </div>
       </div>
 
       {/* Mobile Icons - Visible only on mobile */}
