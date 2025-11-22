@@ -139,8 +139,8 @@ const NavBar = () => {
       </div>
 
       {/* Navigation Links and Icons - Right aligned */}
-      <div className="hidden md:flex items-center gap-1.5 text-sm flex-1 justify-end min-w-0" style={{ opacity: 1, visibility: 'visible', overflow: 'visible', maxWidth: '100%', flexShrink: 1 }}>
-        <ul className="flex items-center gap-0.5 text-sm flex-shrink-0 whitespace-nowrap" style={{ opacity: 1, visibility: 'visible', listStyle: 'none', padding: 0, margin: 0 }}>
+      <div className="hidden md:flex items-center gap-2 text-sm flex-1 justify-end min-w-0" style={{ opacity: 1, visibility: 'visible', overflow: 'visible', maxWidth: '100%', flexShrink: 1 }}>
+        <ul className="flex items-center gap-1 text-sm flex-shrink-0 whitespace-nowrap" style={{ opacity: 1, visibility: 'visible', listStyle: 'none', padding: 0, margin: 0 }}>
         <li className="nav-item" style={{ opacity: 1, visibility: 'visible' }}>
           <NavLink 
             to="/" 
@@ -357,7 +357,7 @@ const NavBar = () => {
         </ul>
         
         {/* Profile and Cart Icons - Part of right section */}
-        <div className="flex items-center gap-1 nav-item flex-shrink-0 ml-1" style={{ opacity: 1, visibility: 'visible', display: 'flex !important', alignItems: 'center', flexShrink: 0, position: 'relative', zIndex: 100, width: 'auto', minWidth: 'auto' }}>
+        <div className="flex items-center gap-2 nav-item flex-shrink-0 ml-2" style={{ opacity: 1, visibility: 'visible', display: 'flex !important', alignItems: 'center', flexShrink: 0, position: 'relative', zIndex: 100, width: 'auto', minWidth: 'auto' }}>
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
@@ -656,7 +656,7 @@ const NavBar = () => {
               height="16" 
               viewBox="0 0 24 24" 
               fill="none" 
-              stroke="black" 
+              stroke="white" 
               strokeWidth="2.5"
               className="w-4 h-4"
             >
